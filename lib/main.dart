@@ -1,8 +1,6 @@
-import 'package:despesas_app/components/transaction_form.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'models/transaction.dart';
-import 'components/transaction_list.dart';
+import 'components/transaction_user.dart';
 
 void main() => initializeDateFormatting('pt_BR', null)
     .then((_) => runApp(const ExpensesApp()));
@@ -18,21 +16,6 @@ class ExpensesApp extends StatelessWidget {
 
 class MyHomePage extends StatelessWidget {
   MyHomePage({super.key});
-
-  final List<Transaction> _transactions = [
-    Transaction(
-      id: '1',
-      title: 'Meu novo tênis de corrida',
-      value: 329.99,
-      date: DateTime.now(),
-    ),
-    Transaction(
-      id: '2',
-      title: 'Conta de Luz',
-      value: 211.30,
-      date: DateTime.now(),
-    ),
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -54,8 +37,7 @@ class MyHomePage extends StatelessWidget {
               child: const Text('Gráfico'),
             ),
           ),
-          TransactionList(_transactions),
-          TransactionForm(),
+          TransactionUser(),
         ],
       ),
     );
