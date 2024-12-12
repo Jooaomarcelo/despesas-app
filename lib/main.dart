@@ -115,6 +115,10 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final availableHeight = MediaQuery.of(context).size.height -
+        MediaQuery.of(context).padding.top -
+        AppBar().preferredSize.height;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Despesas Pessoais'),
@@ -131,9 +135,12 @@ class _MyHomePageState extends State<MyHomePage> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             SizedBox(
+              height: availableHeight * 0.3,
               child: Chart(_recentTransactions),
             ),
-            TransactionList(_transactions, _removeTransaction),
+            SizedBox(
+                height: availableHeight * 0.7,
+                child: TransactionList(_transactions, _removeTransaction)),
           ],
         ),
       ),
