@@ -13,7 +13,35 @@ class ExpensesApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(home: MyHomePage());
+    final ThemeData myTheme = ThemeData(
+      colorScheme: ColorScheme.fromSeed(
+        seedColor: Colors.blue,
+        primary: const Color.fromRGBO(11, 120, 216, 1),
+        secondary: Colors.amber,
+      ),
+      appBarTheme: const AppBarTheme(
+        color: Color.fromRGBO(13, 55, 162, 1),
+        foregroundColor: Colors.white,
+        titleTextStyle: TextStyle(
+          fontFamily: 'OpenSans',
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+      textTheme: const TextTheme(
+        titleLarge: TextStyle(
+          fontFamily: 'OpenSans',
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+          color: Colors.black,
+        ),
+      ),
+    );
+
+    return MaterialApp(
+      home: const MyHomePage(),
+      theme: myTheme,
+    );
   }
 }
 
@@ -27,10 +55,11 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   final List<Transaction> _transactions = [
     Transaction(
-        id: '1',
-        title: 'Novo Tênis de Corrida',
-        value: 310.76,
-        date: DateTime.now().subtract(const Duration(days: 1))),
+      id: '1',
+      title: 'Novo Tênis de Corrida',
+      value: 310.76,
+      date: DateTime.now(),
+    )
   ];
 
   void _addTransaction(String title, double value) {
@@ -42,7 +71,7 @@ class _MyHomePageState extends State<MyHomePage> {
       id: id.toString(),
       title: title,
       value: value,
-      date: DateTime.now().subtract(const Duration(days: 1)),
+      date: DateTime.now(),
     );
 
     setState(() => _transactions.add(newTransaction));
@@ -64,9 +93,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Despesas Pessoais'),
-        backgroundColor: Colors.blueAccent[400],
-        foregroundColor: Colors.white,
-        actions: [
+        actions: <Widget>[
           IconButton(
             icon: const Icon(Icons.add),
             onPressed: () => _openTransactionFormModal(context),
@@ -80,7 +107,7 @@ class _MyHomePageState extends State<MyHomePage> {
           children: <Widget>[
             SizedBox(
               child: Card(
-                color: Colors.blueAccent[400],
+                color: Theme.of(context).colorScheme.primary,
                 elevation: 5,
                 child: const Text('Gráfico'),
               ),
@@ -91,10 +118,11 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _openTransactionFormModal(context),
-        backgroundColor: Colors.blueAccent[400],
+        backgroundColor: Theme.of(context).colorScheme.primary,
         foregroundColor: Colors.white,
         child: const Icon(Icons.add),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }
