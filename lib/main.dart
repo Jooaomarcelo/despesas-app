@@ -18,6 +18,7 @@ class ExpensesApp extends StatelessWidget {
         seedColor: Colors.blue,
         primary: const Color.fromRGBO(11, 120, 216, 1),
         secondary: Colors.amber,
+        error: Colors.red[400],
       ),
       appBarTheme: const AppBarTheme(
         color: Color.fromRGBO(13, 55, 162, 1),
@@ -80,7 +81,7 @@ class _MyHomePageState extends State<MyHomePage> {
     }).toList();
   }
 
-  void _addTransaction(String title, double value, DateTime date) {
+  _addTransaction(String title, double value, DateTime date) {
     final int id = _transactions.isNotEmpty
         ? int.parse(_transactions[_transactions.length - 1].id) + 1
         : 1;
@@ -97,7 +98,13 @@ class _MyHomePageState extends State<MyHomePage> {
     Navigator.of(context).pop();
   }
 
-  void _openTransactionFormModal(BuildContext context) {
+  _removeTransaction(String id) {
+    setState(() {
+      _transactions.removeWhere((transaction) => transaction.id == id);
+    });
+  }
+
+  _openTransactionFormModal(BuildContext context) {
     showModalBottomSheet(
       context: context,
       builder: (_) {
@@ -126,7 +133,7 @@ class _MyHomePageState extends State<MyHomePage> {
             SizedBox(
               child: Chart(_recentTransactions),
             ),
-            TransactionList(_transactions),
+            TransactionList(_transactions, _removeTransaction),
           ],
         ),
       ),
