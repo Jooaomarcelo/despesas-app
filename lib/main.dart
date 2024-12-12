@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:intl/date_symbol_data_local.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 import '/components/chart.dart';
 import '/components/transaction_form.dart';
 import '/components/transaction_list.dart';
 import '/models/transaction.dart';
 
-void main() => initializeDateFormatting('pt_BR', null)
-    .then((_) => runApp(const ExpensesApp()));
+void main() => runApp(const ExpensesApp());
 
 class ExpensesApp extends StatelessWidget {
   const ExpensesApp({super.key});
@@ -48,9 +47,15 @@ class ExpensesApp extends StatelessWidget {
               fontWeight: FontWeight.bold,
             )),
       ),
+      datePickerTheme: const DatePickerThemeData(
+        headerBackgroundColor: Color.fromRGBO(11, 120, 216, 1),
+        headerForegroundColor: Colors.white,
+      ),
     );
 
     return MaterialApp(
+      supportedLocales: const [Locale('pt', 'BR')],
+      localizationsDelegates: GlobalMaterialLocalizations.delegates,
       home: const MyHomePage(),
       theme: myTheme,
     );
@@ -65,20 +70,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final List<Transaction> _transactions = [
-    Transaction(
-      id: '1',
-      title: 'Novo Tênis de Corrida',
-      value: 310.76,
-      date: DateTime.now().subtract(const Duration(days: 4)),
-    ),
-    Transaction(
-      id: '3',
-      title: 'Cartão',
-      value: 15100.76,
-      date: DateTime.now(),
-    )
-  ];
+  final List<Transaction> _transactions = [];
 
   List<Transaction> get _recentTransactions {
     return _transactions.where((transaction) {
