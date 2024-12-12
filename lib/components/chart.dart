@@ -30,7 +30,7 @@ class Chart extends StatelessWidget {
         'day': DateFormat('EEE', 'pt_BR').format(weekDay),
         'value': totalSum,
       };
-    });
+    }).reversed.toList();
   }
 
   double get _weekTotal {
