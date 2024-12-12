@@ -7,6 +7,17 @@ class TransactionForm extends StatelessWidget {
 
   TransactionForm(this.onSubmit, {super.key});
 
+  void _submitForm() {
+    final title = titleController.text;
+    final value = double.tryParse(valueController.text) ?? 0.0;
+
+    if (title.isEmpty || value <= 0) {
+      return;
+    }
+
+    onSubmit(title, value);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -17,20 +28,20 @@ class TransactionForm extends StatelessWidget {
             TextField(
               controller: titleController,
               decoration: const InputDecoration(labelText: 'Título'),
+              onSubmitted: (_) => _submitForm(),
             ),
             TextField(
               controller: valueController,
+              keyboardType:
+                  const TextInputType.numberWithOptions(decimal: true),
               decoration: const InputDecoration(labelText: 'Valor (R\$)'),
+              onSubmitted: (_) => _submitForm(),
             ),
             TextButton(
               style: TextButton.styleFrom(
                 foregroundColor: const Color.fromRGBO(11, 120, 216, 1),
               ),
-              onPressed: () {
-                final title = titleController.text;
-                final value = double.tryParse(valueController.text) ?? 0.0;
-                onSubmit(title, value);
-              },
+              onPressed: _submitForm,
               child: const Text('Nova Transação'),
             )
           ],
