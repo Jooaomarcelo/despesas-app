@@ -10,12 +10,12 @@ class ExpensesApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(home: MyHomePage());
+    return const MaterialApp(home: MyHomePage());
   }
 }
 
 class MyHomePage extends StatelessWidget {
-  MyHomePage({super.key});
+  const MyHomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +37,7 @@ class MyHomePage extends StatelessWidget {
               child: const Text('Gráfico'),
             ),
           ),
-          TransactionUser(),
+          const TransactionUser(),
         ],
       ),
     );
