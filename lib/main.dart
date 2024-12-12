@@ -88,7 +88,7 @@ class _MyHomePageState extends State<MyHomePage> {
     }).toList();
   }
 
-  void _addTransaction(String title, double value) {
+  void _addTransaction(String title, double value, DateTime date) {
     final int id = _transactions.isNotEmpty
         ? int.parse(_transactions[_transactions.length - 1].id) + 1
         : 1;
@@ -97,7 +97,7 @@ class _MyHomePageState extends State<MyHomePage> {
       id: id.toString(),
       title: title,
       value: value,
-      date: DateTime.now(),
+      date: date,
     );
 
     setState(() => _transactions.add(newTransaction));
