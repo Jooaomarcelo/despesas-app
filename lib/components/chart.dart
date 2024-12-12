@@ -1,3 +1,4 @@
+import 'package:despesas_app/components/chart_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../models/transaction.dart';
@@ -26,21 +27,39 @@ class Chart extends StatelessWidget {
       }
 
       return {
-        'day': DateFormat('E', 'pt_BR').format(weekDay)[0],
+        'day': DateFormat('EEE', 'pt_BR').format(weekDay),
         'value': totalSum,
       };
     });
+  }
+
+  double get _weekTotal {
+    return groupedTransactions.fold(
+      0.0,
+      (sum, tr) => sum + (tr['value'] as double),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Card(
       elevation: 5,
-      margin: EdgeInsets.all(20),
-      child: Row(
-        children: groupedTransactions.map((tr) {
-          return Text('${tr['day']}: ${tr['value']}');
-        }).toList(),
+      margin: const EdgeInsets.all(15),
+      child: Padding(
+        padding: const EdgeInsets.all(10),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: groupedTransactions.map((tr) {
+            return Flexible(
+              fit: FlexFit.tight,
+              child: ChartBar(
+                label: tr['day'].toString().toUpperCase(),
+                percentage: (tr['value'] as double) / _weekTotal,
+                value: tr['value'] as double,
+              ),
+            );
+          }).toList(),
+        ),
       ),
     );
   }
