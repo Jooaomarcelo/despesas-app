@@ -71,7 +71,14 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final List<Transaction> _transactions = [];
+  final List<Transaction> _transactions = [
+    Transaction(
+      id: '1',
+      title: 'Novo Tênis de Corrida',
+      value: 310.76,
+      date: DateTime.now().subtract(const Duration(days: 1)),
+    ),
+  ];
 
   List<Transaction> get _recentTransactions {
     return _transactions.where((transaction) {
@@ -81,19 +88,35 @@ class _MyHomePageState extends State<MyHomePage> {
     }).toList();
   }
 
-  _addTransaction(String title, double value, DateTime date) {
-    final int id = _transactions.isNotEmpty
+  _addTransaction({Transaction? tr}) {
+    if (tr == null) {
+      return;
+    }
+
+    final int newId = _transactions.isNotEmpty
         ? int.parse(_transactions[_transactions.length - 1].id) + 1
         : 1;
 
-    final newTransaction = Transaction(
-      id: id.toString(),
-      title: title,
-      value: value,
-      date: date,
-    );
+    tr.id = newId.toString();
 
-    setState(() => _transactions.add(newTransaction));
+    setState(() => _transactions.add(tr));
+
+    Navigator.of(context).pop();
+  }
+
+  _editTransaction({Transaction? tr}) {
+    if (tr == null) {
+      return;
+    }
+
+    final editedTr =
+        _transactions.firstWhere((transaction) => transaction.id == tr.id);
+
+    setState(() {
+      editedTr.title = tr.title;
+      editedTr.value = tr.value;
+      editedTr.date = tr.date;
+    });
 
     Navigator.of(context).pop();
   }
@@ -104,11 +127,14 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  _openTransactionFormModal(BuildContext context) {
+  _openTransactionFormModal(BuildContext context, {Transaction? tr}) {
     showModalBottomSheet(
       context: context,
       builder: (_) {
-        return TransactionForm(_addTransaction);
+        return TransactionForm(
+          onSubmit: tr == null ? _addTransaction : _editTransaction,
+          tr: tr,
+        );
       },
     );
   }
@@ -140,7 +166,11 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             SizedBox(
                 height: availableHeight * 0.7,
-                child: TransactionList(_transactions, _removeTransaction)),
+                child: TransactionList(
+                  transactions: _transactions,
+                  onDelete: _removeTransaction,
+                  openTransactionFormModal: _openTransactionFormModal,
+                )),
           ],
         ),
       ),

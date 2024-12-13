@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class TransactionForm extends StatefulWidget {
-  final void Function(String, double, DateTime) onSubmit;
+import '../models/transaction.dart';
 
-  const TransactionForm(this.onSubmit, {super.key});
+class TransactionForm extends StatefulWidget {
+  final void Function({Transaction? tr}) onSubmit;
+  final Transaction? tr;
+
+  const TransactionForm({
+    this.tr,
+    required this.onSubmit,
+    super.key,
+  });
 
   @override
   State<TransactionForm> createState() => _TransactionFormState();
@@ -15,6 +22,17 @@ class _TransactionFormState extends State<TransactionForm> {
   final _valueController = TextEditingController();
   DateTime _selectedDate = DateTime.now();
 
+  @override
+  void initState() {
+    super.initState();
+
+    if (widget.tr != null) {
+      _titleController.text = widget.tr!.title;
+      _valueController.text = widget.tr!.value.toString();
+      _selectedDate = widget.tr!.date;
+    }
+  }
+
   _submitForm() {
     final title = _titleController.text;
     final value = double.tryParse(_valueController.text) ?? 0.0;
@@ -23,7 +41,28 @@ class _TransactionFormState extends State<TransactionForm> {
       return;
     }
 
-    widget.onSubmit(title, value, _selectedDate);
+    final newTr = Transaction(
+      id: '',
+      title: title,
+      value: value,
+      date: _selectedDate,
+    );
+
+    if (widget.tr != null) {
+      newTr.id = widget.tr!.id;
+      widget.onSubmit(tr: newTr);
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Transação atualizada com sucesso!'),
+        ),
+      );
+
+      return;
+    }
+
+    widget.onSubmit(tr: newTr);
+    return;
   }
 
   _showDatePicker() {
@@ -91,7 +130,7 @@ class _TransactionFormState extends State<TransactionForm> {
                     ),
                   ),
                   onPressed: _submitForm,
-                  child: const Text('Nova Transação'),
+                  child: const Text('Salvar Transação'),
                 ),
               ],
             )
