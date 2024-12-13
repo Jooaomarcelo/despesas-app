@@ -17,6 +17,7 @@ class ExpensesApp extends StatelessWidget {
       colorScheme: ColorScheme.fromSeed(
         seedColor: Colors.blue,
         primary: const Color.fromRGBO(11, 120, 216, 1),
+        onPrimary: Colors.white,
         secondary: Colors.amber,
         error: Colors.red[400],
       ),
@@ -71,14 +72,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final List<Transaction> _transactions = [
-    Transaction(
-      id: '1',
-      title: 'Novo Tênis de Corrida',
-      value: 310.76,
-      date: DateTime.now().subtract(const Duration(days: 1)),
-    ),
-  ];
+  final List<Transaction> _transactions = [];
 
   List<Transaction> get _recentTransactions {
     return _transactions.where((transaction) {

@@ -32,7 +32,7 @@ class TransactionList extends StatelessWidget {
               SizedBox(
                 height: 200,
                 child: Image.asset(
-                  'assets/images/waiting.png',
+                  'assets/images/LogoAzul.jpeg',
                   fit: BoxFit.cover,
                 ),
               ),
@@ -67,11 +67,13 @@ class TransactionList extends StatelessWidget {
                   ),
                   child: ListTile(
                     leading: CircleAvatar(
+                      backgroundColor: Theme.of(context).colorScheme.primary,
+                      foregroundColor: Theme.of(context).colorScheme.onPrimary,
                       radius: 30,
                       child: Padding(
                         padding: const EdgeInsets.all(10),
                         child: FittedBox(
-                          child: Text('R\$${tr.value}'),
+                          child: Text('R\$${tr.value.toStringAsFixed(2)}'),
                         ),
                       ),
                     ),
